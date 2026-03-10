@@ -3,13 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Restrict CSS to same origin only (like production); forces use of proxy when viewed via cobrowse -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="style-src 'self' 'unsafe-inline';"
-    />
     <title>Cobrowse test – Dev / Test</title>
-    <!-- Relative CSS import: this file contains font URLs with "../" (e.g. ../fonts/webfonts/...) -->
     <link rel="stylesheet" href="styles/relative-fonts.css" />
     <style>
       body {
@@ -38,17 +32,6 @@
       }
       .env-switch a:hover {
         opacity: 0.9;
-      }
-      .img-wrap {
-        margin: 1rem 0;
-        padding: 0.5rem;
-        background: #f5f5f5;
-        border-radius: 8px;
-      }
-      .img-wrap img {
-        max-width: 100%;
-        height: auto;
-        display: block;
       }
       code {
         background: #eee;
@@ -134,72 +117,11 @@
       <code>../fonts/webfonts/</code>).
     </p>
 
-    <p>
-      Image (relative <code>images/test-image.jpg</code> — must be served from
-      same origin as this page):
-    </p>
-    <div class="img-wrap">
-      <img id="env-image" src="" alt="Test image" />
-    </div>
+    <p>Image from linked stylesheet (<code>../images/test-image.jpg</code>):</p>
+    <div class="linked-stylesheet-image-test" title="Background from relative-fonts.css"></div>
 
-    <p>
-      <strong>Relative CSS baseURL test</strong> (reproduces customer bug):
-      css-in-js with <code>url("images/test-image.jpg")</code> and
-      <code>url("fonts/Thelawes.otf")</code>. Serve page and assets from same
-      origin. Old viewer → wrong base → image/font fail; new (baseURL fix) →
-      correct.
-    </p>
-    <div id="target" class="relative-css-nds-box">
-      Background image and font from relative URLs appear here when baseURL is
-      applied correctly in the viewer.
-    </div>
-
-    <hr style="margin: 2rem 0" />
-    <h2 style="font-size: 1.1rem">Step 1: Reproduce the issue (no cobrowse)</h2>
-    <p>
-      Same scenario as customer: we take the <strong>CSS string</strong> (with
-      relative <code>url("images/...")</code> and <code>url("fonts/...")</code>)
-      and apply it inside another document that has a
-      <strong>different base URL</strong> (simulated "viewer"). The browser
-      resolves relative URLs against that document's base → wrong origin → image
-      and font fail.
-    </p>
-    <p>
-      <strong>Below:</strong> iframe loaded from a <strong>data URL</strong> so
-      its document base is not your server. Same CSS with relative
-      <code>url("images/...")</code> is applied there → relative URLs resolve
-      against the data URL base → invalid URL → image and font
-      <strong>fail to load</strong> (bug reproduced).
-    </p>
-    <div class="img-wrap" style="margin-top: 0.5rem">
-      <iframe
-        id="repro-iframe"
-        title="Bug reproduction: CSS applied with wrong base (data URL document)"
-        style="
-          width: 100%;
-          height: 200px;
-          border: 1px solid #ccc;
-          border-radius: 6px;
-          background: #fff;
-        "
-      ></iframe>
-    </div>
-    <script>
-      (function () {
-        var iframe = document.getElementById("repro-iframe");
-        if (!iframe) return;
-        var css =
-          '@font-face { font-family: "RelativeTestFont"; src: url("fonts/Thelawes.otf") format("opentype"); }\n' +
-          '.relative-css-nds-box { min-height: 140px; background: url("images/test-image.jpg") center/contain no-repeat #f0f0f0; border: 1px solid #ccc; font-family: RelativeTestFont, sans-serif; font-size: 18px; padding: 8px; }';
-        var html =
-          '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' +
-          css +
-          "</style></head><body>" +
-          '<div class="relative-css-nds-box">Same CSS, but document base = data URL → image/font fail.</div>' +
-          "</body></html>";
-        iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(html);
-      })();
-    </script>
+    <p>CSS-in-JS box (inline <code>&lt;style&gt;</code> + insertRule: <code>url("images/test-image.jpg")</code>, <code>url("fonts/Thelawes.otf")</code>):</p>
+    <div class="relative-css-nds-box">Background image and font from inline CSS appear here.</div>
 
     <div class="deployment-id-wrap genesys-cbx-ignore">
       <label for="inputDeploymentId"
@@ -219,17 +141,6 @@
         <span id="deploymentIdStatus" class="status"></span>
       </div>
       <p id="deploymentIdHint" class="status" style="margin-top: 0.5rem"></p>
-    </div>
-
-    <div class="note">
-      To join a session from console:
-      <code>joinCobrowseSession('SESSION_ID')</code>
-    </div>
-    <div class="note" style="margin-top: 0.5rem">
-      <strong>“Domain not allowed”:</strong> Add your origin (e.g.
-      <code id="origin-hint">http://localhost:8080</code>) to the web
-      deployment’s allowed domains, or use a deployment with
-      <strong>allow all domains</strong>.
     </div>
 
     <script>
@@ -280,13 +191,11 @@
           return getDeploymentIdFromUrl() || getStoredDeploymentId();
         }
 
-        // Origin hint
         var originEl = document.getElementById("origin-hint");
         if (originEl)
           originEl.textContent =
             window.location.origin || "http://localhost:8080";
 
-        // Highlight active env
         document
           .getElementById("link-dev")
           .classList.toggle("active", env === "dev");
@@ -294,13 +203,8 @@
           .getElementById("link-test")
           .classList.toggle("active", env === "test");
 
-        // Set image (relative URL — same origin as page; requires images/test-image.jpg to be served alongside the page)
-        document.getElementById("env-image").src = "images/test-image.jpg";
-
-        // Deployment ID label
         document.getElementById("deploymentIdEnvLabel").textContent = env;
 
-        // Deployment ID input: show saved value for current env
         var inputEl = document.getElementById("inputDeploymentId");
         var statusEl = document.getElementById("deploymentIdStatus");
         var hintEl = document.getElementById("deploymentIdHint");
@@ -333,7 +237,6 @@
 
         var deploymentId = getDeploymentId();
         if (deploymentId) {
-          // Single snippet: load genesys.js with deploymentId so bootstrap fetches config (messenger etc.).
           (function (g, e, n, es, ys) {
             g["_genesysJs"] = e;
             g[e] =
