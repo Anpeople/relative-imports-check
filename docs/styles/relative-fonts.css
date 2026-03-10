@@ -1,0 +1,22 @@
+/* Relative import test: font URLs use "../" from this stylesheet (same format as customer NDS). */
+@font-face {
+  font-family: "NationalFont";
+  src:
+    url("../fonts/webfonts/NationalPark-VariableFont_wght.ttf")
+      format("truetype"),
+    url("../fonts/webfonts/HussarBoldWebEdition-xq5O.otf") format("opentype");
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "NationalFont";
+  src: url("../fonts/webfonts/HussarBoldWebEdition-xq5O.otf") format("opentype");
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Apply the font to the same test box so it's visible when fonts load */
+.relative-css-nds-box {
+  font-family: NationalFont, system-ui, sans-serif;
+}
