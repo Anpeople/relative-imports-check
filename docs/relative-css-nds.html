@@ -54,6 +54,35 @@
 	<p><strong>Relative CSS baseURL test</strong> (reproduces customer bug): css-in-js with <code>url("images/test-image.jpg")</code> and <code>url("fonts/Thelawes.otf")</code>. Serve page and assets from same origin. Old viewer → wrong base → image/font fail; new (baseURL fix) → correct.</p>
 	<div id="target" class="relative-css-nds-box">Background image and font from relative URLs appear here when baseURL is applied correctly in the viewer.</div>
 
+	<hr style="margin: 2rem 0;" />
+	<h2 style="font-size: 1.1rem;">Step 1: Reproduce the issue (no cobrowse)</h2>
+	<p>Same scenario as customer: we take the <strong>CSS string</strong> (with relative <code>url("images/...")</code> and <code>url("fonts/...")</code>) and apply it inside another document that has a <strong>different base URL</strong> (simulated "viewer"). The browser resolves relative URLs against that document's base → wrong origin → image and font fail.</p>
+	<p><strong>Below:</strong> an iframe whose document has <code>&lt;base href="https://wrong-origin.example.com/"&gt;</code>. We inject the same CSS and a box. Image/font request go to wrong-origin.example.com → 404 (bug reproduced).</p>
+	<div class="img-wrap" style="margin-top: 0.5rem;">
+		<iframe id="repro-iframe" title="Bug reproduction: CSS applied with wrong base" style="width: 100%; height: 200px; border: 1px solid #ccc; border-radius: 6px; background: #fff;"></iframe>
+	</div>
+	<script>
+		(function () {
+			var iframe = document.getElementById('repro-iframe');
+			if (!iframe) return;
+			var doc = iframe.contentDocument;
+			if (!doc) return;
+			var wrongBase = 'https://wrong-origin.example.com/';
+			doc.open();
+			doc.write(
+				'<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+				'<base href="' + wrongBase + '">' +
+				'<style id="injected-style"></style></head><body>' +
+				'<div id="repro-box" class="relative-css-nds-box">Same CSS applied here with wrong base → image/font fail.</div>' +
+				'</body></html>'
+			);
+			doc.close();
+			var css = '@font-face { font-family: "RelativeTestFont"; src: url("fonts/Thelawes.otf") format("opentype"); }\n' +
+				'.relative-css-nds-box { min-height: 140px; background: url("images/test-image.jpg") center/contain no-repeat #f0f0f0; border: 1px solid #ccc; font-family: RelativeTestFont, sans-serif; font-size: 18px; padding: 8px; }';
+			doc.getElementById('injected-style').textContent = css;
+		})();
+	</script>
+
 	<div class="deployment-id-wrap genesys-cbx-ignore">
 		<label for="inputDeploymentId">Deployment ID (<span id="deploymentIdEnvLabel">dev</span>)</label>
 		<p class="hint">Stored in this browser only (localStorage). Not in URL or page source.</p>
