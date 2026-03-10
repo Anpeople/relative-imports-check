@@ -1,223 +1,365 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Cobrowse test – Dev / Test</title>
-	<style>
-		body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
-		h1 { font-size: 1.25rem; }
-		.env-switch { margin: 1rem 0; }
-		.env-switch a { margin-right: 0.75rem; padding: 0.35rem 0.75rem; background: #ddd; border-radius: 4px; text-decoration: none; color: #333; }
-		.env-switch a.active { background: #333; color: #fff; }
-		.env-switch a:hover { opacity: 0.9; }
-		.img-wrap { margin: 1rem 0; padding: 0.5rem; background: #f5f5f5; border-radius: 8px; }
-		.img-wrap img { max-width: 100%; height: auto; display: block; }
-		code { background: #eee; padding: 0.15em 0.4em; border-radius: 3px; font-size: 0.9em; }
-		.note { font-size: 0.9rem; color: #666; margin-top: 1.5rem; }
-		.deployment-id-wrap { margin-top: 1rem; padding: 0.75rem; background: #f8f8f8; border-radius: 6px; }
-		.deployment-id-wrap label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
-		.deployment-id-wrap .hint { font-size: 0.9rem; color: #555; margin-bottom: 0.5rem; }
-		.deployment-id-wrap .row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-top: 0.25rem; }
-		.deployment-id-wrap input[type="text"] { flex: 1; min-width: 200px; padding: 0.4rem 0.6rem; }
-		.deployment-id-wrap .status { font-size: 0.85rem; color: #666; }
-	</style>
-	<!-- Relative CSS test: empty style + insertRule so mirror sends cssContent + baseURL. Relative url() must resolve against page origin. -->
-	<style id="relative-css-style"></style>
-	<script>
-		(function () {
-			var style = document.getElementById('relative-css-style');
-			if (style && style.sheet) {
-				try {
-					style.sheet.insertRule('@font-face { font-family: "RelativeTestFont"; src: url("fonts/Thelawes.otf") format("opentype"); }', 0);
-					style.sheet.insertRule('.relative-css-nds-box { min-height: 140px; background: url("images/test-image.jpg") center/contain no-repeat #f0f0f0; border: 1px solid #ccc; font-family: RelativeTestFont, sans-serif; font-size: 18px; padding: 8px; }', 1);
-				} catch (e) { console.error('insertRule failed', e); }
-			}
-		})();
-	</script>
-</head>
-<body>
-	<h1>Cobrowse test – Dev / Test</h1>
-	<p>Use the links below to switch env and reload with the right Genesys config.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cobrowse test – Dev / Test</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 640px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      h1 {
+        font-size: 1.25rem;
+      }
+      .env-switch {
+        margin: 1rem 0;
+      }
+      .env-switch a {
+        margin-right: 0.75rem;
+        padding: 0.35rem 0.75rem;
+        background: #ddd;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #333;
+      }
+      .env-switch a.active {
+        background: #333;
+        color: #fff;
+      }
+      .env-switch a:hover {
+        opacity: 0.9;
+      }
+      .img-wrap {
+        margin: 1rem 0;
+        padding: 0.5rem;
+        background: #f5f5f5;
+        border-radius: 8px;
+      }
+      .img-wrap img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+      code {
+        background: #eee;
+        padding: 0.15em 0.4em;
+        border-radius: 3px;
+        font-size: 0.9em;
+      }
+      .note {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 1.5rem;
+      }
+      .deployment-id-wrap {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        background: #f8f8f8;
+        border-radius: 6px;
+      }
+      .deployment-id-wrap label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+      .deployment-id-wrap .hint {
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 0.5rem;
+      }
+      .deployment-id-wrap .row {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 0.25rem;
+      }
+      .deployment-id-wrap input[type="text"] {
+        flex: 1;
+        min-width: 200px;
+        padding: 0.4rem 0.6rem;
+      }
+      .deployment-id-wrap .status {
+        font-size: 0.85rem;
+        color: #666;
+      }
+    </style>
+    <!-- Relative CSS test: empty style + insertRule so mirror sends cssContent + baseURL. Relative url() must resolve against page origin. -->
+    <style id="relative-css-style"></style>
+    <script>
+      (function () {
+        var style = document.getElementById("relative-css-style");
+        if (style && style.sheet) {
+          try {
+            style.sheet.insertRule(
+              '@font-face { font-family: "RelativeTestFont"; src: url("fonts/Thelawes.otf") format("opentype"); }',
+              0,
+            );
+            style.sheet.insertRule(
+              '.relative-css-nds-box { min-height: 140px; background: url("images/test-image.jpg") center/contain no-repeat #f0f0f0; border: 1px solid #ccc; font-family: RelativeTestFont, sans-serif; font-size: 18px; padding: 8px; }',
+              1,
+            );
+          } catch (e) {
+            console.error("insertRule failed", e);
+          }
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <h1>Cobrowse test – Dev / Test</h1>
+    <p>
+      Use the links below to switch env and reload with the right Genesys
+      config.
+    </p>
 
-	<div class="env-switch">
-		<strong>Environment:</strong>
-		<a href="?env=dev" id="link-dev">Dev (inindca)</a>
-		<a href="?env=test" id="link-test">Test (inintca)</a>
-	</div>
+    <div class="env-switch">
+      <strong>Environment:</strong>
+      <a href="?env=dev" id="link-dev">Dev (inindca)</a>
+      <a href="?env=test" id="link-test">Test (inintca)</a>
+    </div>
 
-	<p>Image (relative <code>images/test-image.jpg</code> — must be served from same origin as this page):</p>
-	<div class="img-wrap">
-		<img id="env-image" src="" alt="Test image" />
-	</div>
+    <p>
+      Image (relative <code>images/test-image.jpg</code> — must be served from
+      same origin as this page):
+    </p>
+    <div class="img-wrap">
+      <img id="env-image" src="" alt="Test image" />
+    </div>
 
-	<p><strong>Relative CSS baseURL test</strong> (reproduces customer bug): css-in-js with <code>url("images/test-image.jpg")</code> and <code>url("fonts/Thelawes.otf")</code>. Serve page and assets from same origin. Old viewer → wrong base → image/font fail; new (baseURL fix) → correct.</p>
-	<div id="target" class="relative-css-nds-box">Background image and font from relative URLs appear here when baseURL is applied correctly in the viewer.</div>
+    <p>
+      <strong>Relative CSS baseURL test</strong> (reproduces customer bug):
+      css-in-js with <code>url("images/test-image.jpg")</code> and
+      <code>url("fonts/Thelawes.otf")</code>. Serve page and assets from same
+      origin. Old viewer → wrong base → image/font fail; new (baseURL fix) →
+      correct.
+    </p>
+    <div id="target" class="relative-css-nds-box">
+      Background image and font from relative URLs appear here when baseURL is
+      applied correctly in the viewer.
+    </div>
 
-	<hr style="margin: 2rem 0;" />
-	<h2 style="font-size: 1.1rem;">Step 1: Reproduce the issue (no cobrowse)</h2>
-	<p>Same scenario as customer: we take the <strong>CSS string</strong> (with relative <code>url("images/...")</code> and <code>url("fonts/...")</code>) and apply it inside another document that has a <strong>different base URL</strong> (simulated "viewer"). The browser resolves relative URLs against that document's base → wrong origin → image and font fail.</p>
-	<p><strong>Below:</strong> an iframe whose document has <code>&lt;base href="https://wrong-origin.example.com/"&gt;</code>. We inject the same CSS and a box. Image/font request go to wrong-origin.example.com → 404 (bug reproduced).</p>
-	<div class="img-wrap" style="margin-top: 0.5rem;">
-		<iframe id="repro-iframe" title="Bug reproduction: CSS applied with wrong base" style="width: 100%; height: 200px; border: 1px solid #ccc; border-radius: 6px; background: #fff;"></iframe>
-	</div>
-	<script>
-		(function () {
-			var iframe = document.getElementById('repro-iframe');
-			if (!iframe) return;
-			var doc = iframe.contentDocument;
-			if (!doc) return;
-			var wrongBase = 'https://wrong-origin.example.com/';
-			doc.open();
-			doc.write(
-				'<!DOCTYPE html><html><head><meta charset="UTF-8">' +
-				'<base href="' + wrongBase + '">' +
-				'<style id="injected-style"></style></head><body>' +
-				'<div id="repro-box" class="relative-css-nds-box">Same CSS applied here with wrong base → image/font fail.</div>' +
-				'</body></html>'
-			);
-			doc.close();
-			var css = '@font-face { font-family: "RelativeTestFont"; src: url("fonts/Thelawes.otf") format("opentype"); }\n' +
-				'.relative-css-nds-box { min-height: 140px; background: url("images/test-image.jpg") center/contain no-repeat #f0f0f0; border: 1px solid #ccc; font-family: RelativeTestFont, sans-serif; font-size: 18px; padding: 8px; }';
-			doc.getElementById('injected-style').textContent = css;
-		})();
-	</script>
+    <hr style="margin: 2rem 0" />
+    <h2 style="font-size: 1.1rem">Step 1: Reproduce the issue (no cobrowse)</h2>
+    <p>
+      Same scenario as customer: we take the <strong>CSS string</strong> (with
+      relative <code>url("images/...")</code> and <code>url("fonts/...")</code>)
+      and apply it inside another document that has a
+      <strong>different base URL</strong> (simulated "viewer"). The browser
+      resolves relative URLs against that document's base → wrong origin → image
+      and font fail.
+    </p>
+    <p>
+      <strong>Below:</strong> iframe loaded from a <strong>data URL</strong> so
+      its document base is not your server. Same CSS with relative
+      <code>url("images/...")</code> is applied there → relative URLs resolve
+      against the data URL base → invalid URL → image and font
+      <strong>fail to load</strong> (bug reproduced).
+    </p>
+    <div class="img-wrap" style="margin-top: 0.5rem">
+      <iframe
+        id="repro-iframe"
+        title="Bug reproduction: CSS applied with wrong base (data URL document)"
+        style="
+          width: 100%;
+          height: 200px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          background: #fff;
+        "
+      ></iframe>
+    </div>
+    <script>
+      (function () {
+        var iframe = document.getElementById("repro-iframe");
+        if (!iframe) return;
+        var css =
+          '@font-face { font-family: "RelativeTestFont"; src: url("fonts/Thelawes.otf") format("opentype"); }\n' +
+          '.relative-css-nds-box { min-height: 140px; background: url("images/test-image.jpg") center/contain no-repeat #f0f0f0; border: 1px solid #ccc; font-family: RelativeTestFont, sans-serif; font-size: 18px; padding: 8px; }';
+        var html =
+          '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' +
+          css +
+          "</style></head><body>" +
+          '<div class="relative-css-nds-box">Same CSS, but document base = data URL → image/font fail.</div>' +
+          "</body></html>";
+        iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(html);
+      })();
+    </script>
 
-	<div class="deployment-id-wrap genesys-cbx-ignore">
-		<label for="inputDeploymentId">Deployment ID (<span id="deploymentIdEnvLabel">dev</span>)</label>
-		<p class="hint">Stored in this browser only (localStorage). Not in URL or page source.</p>
-		<div class="row">
-			<input id="inputDeploymentId" type="text" placeholder="Paste deployment ID and save" autocomplete="off" />
-			<button type="button" id="btnSaveDeploymentId">Save</button>
-			<span id="deploymentIdStatus" class="status"></span>
-		</div>
-		<p id="deploymentIdHint" class="status" style="margin-top: 0.5rem;"></p>
-	</div>
+    <div class="deployment-id-wrap genesys-cbx-ignore">
+      <label for="inputDeploymentId"
+        >Deployment ID (<span id="deploymentIdEnvLabel">dev</span>)</label
+      >
+      <p class="hint">
+        Stored in this browser only (localStorage). Not in URL or page source.
+      </p>
+      <div class="row">
+        <input
+          id="inputDeploymentId"
+          type="text"
+          placeholder="Paste deployment ID and save"
+          autocomplete="off"
+        />
+        <button type="button" id="btnSaveDeploymentId">Save</button>
+        <span id="deploymentIdStatus" class="status"></span>
+      </div>
+      <p id="deploymentIdHint" class="status" style="margin-top: 0.5rem"></p>
+    </div>
 
-	<div class="note">
-		To join a session from console: <code>joinCobrowseSession('SESSION_ID')</code>
-	</div>
-	<div class="note" style="margin-top: 0.5rem;">
-		<strong>“Domain not allowed”:</strong> Add your origin (e.g. <code id="origin-hint">http://localhost:8080</code>) to the web deployment’s allowed domains, or use a deployment with <strong>allow all domains</strong>.
-	</div>
+    <div class="note">
+      To join a session from console:
+      <code>joinCobrowseSession('SESSION_ID')</code>
+    </div>
+    <div class="note" style="margin-top: 0.5rem">
+      <strong>“Domain not allowed”:</strong> Add your origin (e.g.
+      <code id="origin-hint">http://localhost:8080</code>) to the web
+      deployment’s allowed domains, or use a deployment with
+      <strong>allow all domains</strong>.
+    </div>
 
-	<script>
-		(function () {
-			var STORAGE_PREFIX = 'cobrowse-test-deploymentId-';
+    <script>
+      (function () {
+        var STORAGE_PREFIX = "cobrowse-test-deploymentId-";
 
-			var params = new URLSearchParams(window.location.search);
-			var env = (params.get('env') || 'dev').toLowerCase();
-			if (env !== 'test') env = 'dev';
+        var params = new URLSearchParams(window.location.search);
+        var env = (params.get("env") || "dev").toLowerCase();
+        if (env !== "test") env = "dev";
 
-			var CONFIG = {
-				dev: {
-					domain: 'inindca.com',
-					bootstrap: 'https://apps.inindca.com/genesys-bootstrap/genesys.min.js',
-					sharer: 'https://apps.inindca.com/cobrowse-next/sharer.min.js',
-					environment: 'dev'
-				},
-				test: {
-					domain: 'inintca.com',
-					bootstrap: 'https://apps.inintca.com/genesys-bootstrap/genesys.min.js',
-					sharer: 'https://apps.inintca.com/cobrowse-next/sharer.min.js',
-					environment: 'test'
-				}
-			};
+        var CONFIG = {
+          dev: {
+            domain: "inindca.com",
+            bootstrap:
+              "https://apps.inindca.com/genesys-bootstrap/genesys.min.js",
+            sharer: "https://apps.inindca.com/cobrowse-next/sharer.min.js",
+            environment: "dev",
+          },
+          test: {
+            domain: "inintca.com",
+            bootstrap:
+              "https://apps.inintca.com/genesys-bootstrap/genesys.min.js",
+            sharer: "https://apps.inintca.com/cobrowse-next/sharer.min.js",
+            environment: "test",
+          },
+        };
 
-			var cfg = CONFIG[env];
+        var cfg = CONFIG[env];
 
-			function getStorageKey() {
-				return STORAGE_PREFIX + env;
-			}
+        function getStorageKey() {
+          return STORAGE_PREFIX + env;
+        }
 
-			function getStoredDeploymentId() {
-				try {
-					return (localStorage.getItem(getStorageKey()) || '').trim();
-				} catch (e) {
-					return '';
-				}
-			}
+        function getStoredDeploymentId() {
+          try {
+            return (localStorage.getItem(getStorageKey()) || "").trim();
+          } catch (e) {
+            return "";
+          }
+        }
 
-			function getDeploymentIdFromUrl() {
-				var id = (params.get('deploymentId') || '').trim();
-				return id === 'undefined' ? '' : id;
-			}
+        function getDeploymentIdFromUrl() {
+          var id = (params.get("deploymentId") || "").trim();
+          return id === "undefined" ? "" : id;
+        }
 
-			function getDeploymentId() {
-				return getDeploymentIdFromUrl() || getStoredDeploymentId();
-			}
+        function getDeploymentId() {
+          return getDeploymentIdFromUrl() || getStoredDeploymentId();
+        }
 
-			// Origin hint
-			var originEl = document.getElementById('origin-hint');
-			if (originEl) originEl.textContent = window.location.origin || 'http://localhost:8080';
+        // Origin hint
+        var originEl = document.getElementById("origin-hint");
+        if (originEl)
+          originEl.textContent =
+            window.location.origin || "http://localhost:8080";
 
-			// Highlight active env
-			document.getElementById('link-dev').classList.toggle('active', env === 'dev');
-			document.getElementById('link-test').classList.toggle('active', env === 'test');
+        // Highlight active env
+        document
+          .getElementById("link-dev")
+          .classList.toggle("active", env === "dev");
+        document
+          .getElementById("link-test")
+          .classList.toggle("active", env === "test");
 
-			// Set image (relative URL — same origin as page; requires images/test-image.jpg to be served alongside the page)
-			document.getElementById('env-image').src = 'images/test-image.jpg';
+        // Set image (relative URL — same origin as page; requires images/test-image.jpg to be served alongside the page)
+        document.getElementById("env-image").src = "images/test-image.jpg";
 
-			// Deployment ID label
-			document.getElementById('deploymentIdEnvLabel').textContent = env;
+        // Deployment ID label
+        document.getElementById("deploymentIdEnvLabel").textContent = env;
 
-			// Deployment ID input: show saved value for current env
-			var inputEl = document.getElementById('inputDeploymentId');
-			var statusEl = document.getElementById('deploymentIdStatus');
-			var hintEl = document.getElementById('deploymentIdHint');
-			inputEl.value = getStoredDeploymentId();
-			if (getStoredDeploymentId()) {
-				statusEl.textContent = 'Saved for this browser';
-				hintEl.textContent = 'Reload the page to load Genesys with this ID, or change and Save.';
-			} else {
-				hintEl.textContent = 'Enter your deployment ID for ' + env + ' and click Save. Stored only in this browser.';
-			}
+        // Deployment ID input: show saved value for current env
+        var inputEl = document.getElementById("inputDeploymentId");
+        var statusEl = document.getElementById("deploymentIdStatus");
+        var hintEl = document.getElementById("deploymentIdHint");
+        inputEl.value = getStoredDeploymentId();
+        if (getStoredDeploymentId()) {
+          statusEl.textContent = "Saved for this browser";
+          hintEl.textContent =
+            "Reload the page to load Genesys with this ID, or change and Save.";
+        } else {
+          hintEl.textContent =
+            "Enter your deployment ID for " +
+            env +
+            " and click Save. Stored only in this browser.";
+        }
 
-			document.getElementById('btnSaveDeploymentId').addEventListener('click', function () {
-				var val = (inputEl.value || '').trim();
-				if (!val) return;
-				try {
-					localStorage.setItem(getStorageKey(), val);
-					statusEl.textContent = 'Saved. Reload to apply.';
-					hintEl.textContent = 'Reload the page to load Genesys with this deployment ID.';
-				} catch (e) {
-					statusEl.textContent = 'Save failed (e.g. private browsing)';
-				}
-			});
+        document
+          .getElementById("btnSaveDeploymentId")
+          .addEventListener("click", function () {
+            var val = (inputEl.value || "").trim();
+            if (!val) return;
+            try {
+              localStorage.setItem(getStorageKey(), val);
+              statusEl.textContent = "Saved. Reload to apply.";
+              hintEl.textContent =
+                "Reload the page to load Genesys with this deployment ID.";
+            } catch (e) {
+              statusEl.textContent = "Save failed (e.g. private browsing)";
+            }
+          });
 
-			var deploymentId = getDeploymentId();
-			if (deploymentId) {
-				// Single snippet: load genesys.js with deploymentId so bootstrap fetches config (messenger etc.).
-				(function (g, e, n, es, ys) {
-					g['_genesysJs'] = e;
-					g[e] = g[e] || function () { (g[e].q = g[e].q || []).push(arguments); };
-					g[e].t = 1 * new Date();
-					g[e].c = es;
-					ys = document.createElement('script');
-					ys.async = 1;
-					ys.src = n;
-					ys.charset = 'utf-8';
-					document.head.appendChild(ys);
-				})(window, 'Genesys', cfg.bootstrap, {
-					environment: cfg.environment,
-					deploymentId: deploymentId,
-					debug: true,
-					pluginmap: {
-						CobrowseService: cfg.sharer
-					}
-				});
+        var deploymentId = getDeploymentId();
+        if (deploymentId) {
+          // Single snippet: load genesys.js with deploymentId so bootstrap fetches config (messenger etc.).
+          (function (g, e, n, es, ys) {
+            g["_genesysJs"] = e;
+            g[e] =
+              g[e] ||
+              function () {
+                (g[e].q = g[e].q || []).push(arguments);
+              };
+            g[e].t = 1 * new Date();
+            g[e].c = es;
+            ys = document.createElement("script");
+            ys.async = 1;
+            ys.src = n;
+            ys.charset = "utf-8";
+            document.head.appendChild(ys);
+          })(window, "Genesys", cfg.bootstrap, {
+            environment: cfg.environment,
+            deploymentId: deploymentId,
+            debug: true,
+            pluginmap: {
+              CobrowseService: cfg.sharer,
+            },
+          });
 
-				window.joinCobrowseSession = function (sessionId) {
-					Genesys(
-						'command',
-						'CobrowseService.acceptSession',
-						{ joinCode: sessionId, sessionId: sessionId },
-						function (offerState) { console.log('acceptSession.success', offerState); },
-						function (err) { console.log('acceptSession.error', err); }
-					);
-				};
-			}
-		})();
-	</script>
-</body>
+          window.joinCobrowseSession = function (sessionId) {
+            Genesys(
+              "command",
+              "CobrowseService.acceptSession",
+              { joinCode: sessionId, sessionId: sessionId },
+              function (offerState) {
+                console.log("acceptSession.success", offerState);
+              },
+              function (err) {
+                console.log("acceptSession.error", err);
+              },
+            );
+          };
+        }
+      })();
+    </script>
+  </body>
 </html>
