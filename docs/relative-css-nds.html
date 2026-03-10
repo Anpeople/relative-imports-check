@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Restrict CSS to same origin only (like production); forces use of proxy when viewed via cobrowse -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="style-src 'self' 'unsafe-inline';"
+    />
     <title>Cobrowse test – Dev / Test</title>
     <!-- Relative CSS import: this file contains font URLs with "../" (e.g. ../fonts/webfonts/...) -->
     <link rel="stylesheet" href="styles/relative-fonts.css" />
@@ -125,7 +130,8 @@
     </div>
 
     <p class="national-font-test">
-      Test text in NationalFont (from <code>styles/relative-fonts.css</code> → <code>../fonts/webfonts/</code>).
+      Test text in NationalFont (from <code>styles/relative-fonts.css</code> →
+      <code>../fonts/webfonts/</code>).
     </p>
 
     <p>
