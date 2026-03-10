@@ -20,3 +20,13 @@
 .relative-css-nds-box {
   font-family: NationalFont, system-ui, sans-serif;
 }
+
+/* Standalone test text using only linked stylesheet fonts (not in iframe/box) */
+.national-font-test {
+  font-family: NationalFont, system-ui, sans-serif;
+  font-size: 1.25rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background: #f8f8f8;
+  border-radius: 4px;
+}

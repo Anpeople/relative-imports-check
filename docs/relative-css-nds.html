@@ -101,7 +101,7 @@
               0,
             );
             style.sheet.insertRule(
-              '.relative-css-nds-box { min-height: 140px; background: url("images/test-image.jpg") center/contain no-repeat #f0f0f0; border: 1px solid #ccc; font-family: RelativeTestFont, sans-serif; font-size: 18px; padding: 8px; }',
+              '.relative-css-nds-box { min-height: 140px; background: url("images/test-image.jpg") center/contain no-repeat #f0f0f0; border: 1px solid #ccc; font-family: NationalFont, RelativeTestFont, sans-serif; font-size: 18px; padding: 8px; }',
               1,
             );
           } catch (e) {
@@ -123,6 +123,10 @@
       <a href="?env=dev" id="link-dev">Dev (inindca)</a>
       <a href="?env=test" id="link-test">Test (inintca)</a>
     </div>
+
+    <p class="national-font-test">
+      Test text in NationalFont (from <code>styles/relative-fonts.css</code> → <code>../fonts/webfonts/</code>).
+    </p>
 
     <p>
       Image (relative <code>images/test-image.jpg</code> — must be served from
