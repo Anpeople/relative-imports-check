@@ -102,29 +102,6 @@
         }
       })();
     </script>
-    <script>
-      (function () {
-        var link = document.getElementById("main-stylesheet");
-        var btn = document.getElementById("btn-simulate-nav");
-        var status = document.getElementById("nav-sim-status");
-        if (!link || !btn) return;
-        var useAfterNav = true;
-        btn.addEventListener("click", function () {
-          if (useAfterNav) {
-            link.href = "styles/relative-fonts-after-nav.css";
-            if (status)
-              status.textContent =
-                "Switched to \"after nav\" stylesheet. On the viewer you should see: blue background, green NationalFont box, orange status bar. If you don't, re-proxy may be broken.";
-          } else {
-            link.href = "styles/relative-fonts.css";
-            if (status)
-              status.textContent =
-                "Switched back to original stylesheet. Click again to test \"after nav\" again.";
-          }
-          useAfterNav = !useAfterNav;
-        });
-      })();
-    </script>
   </head>
   <body>
     <h1>Cobrowse test – Dev / Test</h1>
@@ -158,6 +135,29 @@
       id="nav-sim-status"
       style="font-size: 0.85rem; color: #666; margin: 0"
     ></p>
+    <script>
+      (function () {
+        var link = document.getElementById("main-stylesheet");
+        var btn = document.getElementById("btn-simulate-nav");
+        var status = document.getElementById("nav-sim-status");
+        if (!link || !btn) return;
+        var useAfterNav = true;
+        btn.addEventListener("click", function () {
+          if (useAfterNav) {
+            link.href = "styles/relative-fonts-after-nav.css";
+            if (status)
+              status.textContent =
+                "Switched to \"after nav\" stylesheet. On the viewer you should see: blue background, green NationalFont box, orange status bar. If you don't, re-proxy may be broken.";
+          } else {
+            link.href = "styles/relative-fonts.css";
+            if (status)
+              status.textContent =
+                "Switched back to original stylesheet. Click again to test \"after nav\" again.";
+          }
+          useAfterNav = !useAfterNav;
+        });
+      })();
+    </script>
 
     <p class="national-font-test">
       Test text in NationalFont (from <code>styles/relative-fonts.css</code> →
