@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cobrowse test – Dev / Test</title>
-    <link rel="stylesheet" href="styles/relative-fonts.css" />
+    <link
+      rel="stylesheet"
+      href="styles/relative-fonts.css"
+      id="main-stylesheet"
+    />
     <style>
       body {
         font-family: system-ui, sans-serif;
@@ -98,6 +102,24 @@
         }
       })();
     </script>
+    <script>
+      (function () {
+        var link = document.getElementById("main-stylesheet");
+        var btn = document.getElementById("btn-simulate-nav");
+        var status = document.getElementById("nav-sim-status");
+        if (!link || !btn) return;
+        var v = 1;
+        btn.addEventListener("click", function () {
+          v++;
+          link.href = "styles/relative-fonts.css?v=" + v;
+          if (status)
+            status.textContent =
+              "Done. Link href is now " +
+              link.href +
+              " (attribute change sent to viewer).";
+        });
+      })();
+    </script>
   </head>
   <body>
     <h1>Cobrowse test – Dev / Test</h1>
@@ -112,16 +134,43 @@
       <a href="?env=test" id="link-test">Test (inintca)</a>
     </div>
 
+    <p style="font-size: 0.9rem; color: #666; margin: 0.5rem 0">
+      <strong>Repro “after navigation”:</strong> click the button to change the
+      stylesheet link <code>href</code> (same file, <code>?v=2</code>). That
+      triggers an attribute update on the viewer — without the re-proxy fix,
+      fonts/CSS can break there.
+    </p>
+    <button
+      type="button"
+      id="btn-simulate-nav"
+      style="margin-bottom: 0.5rem; padding: 0.35rem 0.75rem; cursor: pointer"
+    >
+      Simulate navigation (change stylesheet href)
+    </button>
+    <p
+      id="nav-sim-status"
+      style="font-size: 0.85rem; color: #666; margin: 0"
+    ></p>
+
     <p class="national-font-test">
       Test text in NationalFont (from <code>styles/relative-fonts.css</code> →
       <code>../fonts/webfonts/</code>).
     </p>
 
     <p>Image from linked stylesheet (<code>../images/test-image.jpg</code>):</p>
-    <div class="linked-stylesheet-image-test" title="Background from relative-fonts.css"></div>
+    <div
+      class="linked-stylesheet-image-test"
+      title="Background from relative-fonts.css"
+    ></div>
 
-    <p>CSS-in-JS box (inline <code>&lt;style&gt;</code> + insertRule: <code>url("images/test-image.jpg")</code>, <code>url("fonts/Thelawes.otf")</code>):</p>
-    <div class="relative-css-nds-box">Background image and font from inline CSS appear here.</div>
+    <p>
+      CSS-in-JS box (inline <code>&lt;style&gt;</code> + insertRule:
+      <code>url("images/test-image.jpg")</code>,
+      <code>url("fonts/Thelawes.otf")</code>):
+    </p>
+    <div class="relative-css-nds-box">
+      Background image and font from inline CSS appear here.
+    </div>
 
     <div class="deployment-id-wrap genesys-cbx-ignore">
       <label for="inputDeploymentId"
