@@ -1,0 +1,58 @@
+/* Same fonts and image as relative-fonts.css — used after "Simulate navigation" to make the change obvious. */
+@font-face {
+  font-family: "NationalFont";
+  src:
+    url("../fonts/webfonts/NationalPark-VariableFont_wght.ttf") format("truetype"),
+    url("../fonts/webfonts/HussarBoldWebEdition-xq5O.otf") format("opentype");
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "NationalFont";
+  src: url("../fonts/webfonts/HussarBoldWebEdition-xq5O.otf") format("opentype");
+  font-style: normal;
+  font-weight: 700;
+}
+
+.national-font-test {
+  font-family: NationalFont, system-ui, sans-serif;
+  font-size: 1.25rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background: #f8f8f8;
+  border-radius: 4px;
+}
+
+.linked-stylesheet-image-test {
+  min-height: 120px;
+  background: url("../images/test-image.jpg") center/contain no-repeat #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin: 0.5rem 0;
+}
+
+/* === OBVIOUS "AFTER NAV" STYLES: if you see these on the viewer, the new stylesheet loaded (re-proxy works). === */
+body {
+  background: #cce5ff !important;
+}
+
+.national-font-test {
+  background: #2d5016 !important;
+  color: #fff !important;
+  font-size: 1.4rem !important;
+  padding: 0.75rem !important;
+  border: 3px solid #0d3300 !important;
+}
+
+.linked-stylesheet-image-test {
+  border: 4px solid #2563eb !important;
+  box-shadow: 0 0 0 4px #93c5fd !important;
+}
+
+#nav-sim-status {
+  background: #fef3c7 !important;
+  padding: 0.5rem !important;
+  border: 2px solid #d97706 !important;
+  font-weight: bold !important;
+}

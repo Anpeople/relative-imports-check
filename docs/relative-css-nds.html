@@ -108,15 +108,20 @@
         var btn = document.getElementById("btn-simulate-nav");
         var status = document.getElementById("nav-sim-status");
         if (!link || !btn) return;
-        var v = 1;
+        var useAfterNav = true;
         btn.addEventListener("click", function () {
-          v++;
-          link.href = "styles/relative-fonts.css?v=" + v;
-          if (status)
-            status.textContent =
-              "Done. Link href is now " +
-              link.href +
-              " (attribute change sent to viewer).";
+          if (useAfterNav) {
+            link.href = "styles/relative-fonts-after-nav.css";
+            if (status)
+              status.textContent =
+                "Switched to \"after nav\" stylesheet. On the viewer you should see: blue background, green NationalFont box, orange status bar. If you don't, re-proxy may be broken.";
+          } else {
+            link.href = "styles/relative-fonts.css";
+            if (status)
+              status.textContent =
+                "Switched back to original stylesheet. Click again to test \"after nav\" again.";
+          }
+          useAfterNav = !useAfterNav;
         });
       })();
     </script>
@@ -135,17 +140,19 @@
     </div>
 
     <p style="font-size: 0.9rem; color: #666; margin: 0.5rem 0">
-      <strong>Repro “after navigation”:</strong> click the button to change the
-      stylesheet link <code>href</code> (same file, <code>?v=2</code>). That
-      triggers an attribute update on the viewer — without the re-proxy fix,
-      fonts/CSS can break there.
+      <strong>Repro “after navigation”:</strong> click the button to switch the
+      stylesheet to <code>relative-fonts-after-nav.css</code>. That triggers an
+      attribute update on the viewer. <strong>If re-proxy works:</strong> the
+      viewer will load the new CSS and you’ll see a clear change (blue page
+      background, green NationalFont box, orange status). <strong>If it
+      doesn’t:</strong> the viewer stays the same or fonts/CSS break.
     </p>
     <button
       type="button"
       id="btn-simulate-nav"
-      style="margin-bottom: 0.5rem; padding: 0.35rem 0.75rem; cursor: pointer"
+      style="display: inline-block; margin: 0.5rem 0; padding: 0.5rem 1rem; cursor: pointer; font-size: 1rem; background: #2563eb; color: #fff; border: 2px solid #1d4ed8; border-radius: 6px"
     >
-      Simulate navigation (change stylesheet href)
+      Simulate navigation (switch to “after nav” stylesheet)
     </button>
     <p
       id="nav-sim-status"
